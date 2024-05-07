@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->foreignIdFor(\App\Models\User::class)->index();
+
             $table->timestamps();
         });
     }
