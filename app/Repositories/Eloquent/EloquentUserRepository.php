@@ -12,5 +12,4 @@ class EloquentUserRepository extends RepositoryAbstract implements UserRepositor
     {
         return User::class;
     }
-
 }

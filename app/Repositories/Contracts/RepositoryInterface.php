@@ -10,6 +10,8 @@ interface RepositoryInterface
 
     public function findWhere($column, $value);
 
+    public function findWhereFirst($column, $value);
+
     public function paginate($perPage = 10);
 
     public function create(array $properties);

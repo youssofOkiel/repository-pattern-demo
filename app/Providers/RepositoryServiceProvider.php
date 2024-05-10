@@ -23,10 +23,10 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $binds = [
             TopicRepository::class => EloquentTopicRepository::class,
-            UserRepository::class => EloquentUserRepository::class
+            UserRepository::class => EloquentUserRepository::class,
         ];
 
-        foreach ($binds as $contract => $class ){
+        foreach ($binds as $contract => $class) {
             $this->app->bind($contract, $class);
         }
     }

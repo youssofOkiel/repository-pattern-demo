@@ -3,12 +3,13 @@
 namespace App\Repositories;
 
 use App\Repositories\Contracts\RepositoryInterface;
-use App\Repositories\Exceptions\NoModelDefined;
-use Illuminate\Database\Eloquent\Model;
+use App\Repositories\Criteria\CriteriaInterface;
+use App\Repositories\Exceptions\NoModelDefinedException;
+use Illuminate\Support\Arr;
 
-abstract class RepositoryAbstract implements RepositoryInterface
+abstract class RepositoryAbstract implements CriteriaInterface, RepositoryInterface
 {
-    protected Model $model;
+    protected $model;
 
     public function __construct()
     {
@@ -17,7 +18,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
 
     public function all()
     {
-        return $this->model::all();
+        return $this->model->get();
     }
 
     public function find($id)
@@ -28,6 +29,11 @@ abstract class RepositoryAbstract implements RepositoryInterface
     public function findWhere($column, $value)
     {
         return $this->model->where($column, $value)->get();
+    }
+
+    public function findWhereFirst($column, $value)
+    {
+        return $this->model->where($column, $value)->first();
     }
 
     public function paginate($perPage = 10)
@@ -50,10 +56,21 @@ abstract class RepositoryAbstract implements RepositoryInterface
         return $this->find($id)->delete();
     }
 
+    public function withCriteria(...$criteria)
+    {
+        $criteria = Arr::flatten($criteria);
+
+        foreach ($criteria as $criterion) {
+            $this->model = $criterion->apply($this->model);
+        }
+
+        return $this;
+    }
+
     protected function resolveModel()
     {
-        if (!method_exists($this, 'model')) {
-            throw new NoModelDefined('No model defined !');
+        if (! method_exists($this, 'model')) {
+            throw new NoModelDefinedException('No model defined !');
         }
 
         return app()->make($this->model());

@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Exceptions;
 
-class NoModelDefined extends \Exception
+class NoModelDefinedException extends \Exception
 {
-
 }
