@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Repositories\Contracts\{TopicRepository, UserRepository};
-use App\Repositories\Eloquent\{EloquentTopicRepository, EloquentUserRepository};
+use App\Repositories\Contracts\{AddressRepository, TopicRepository, UserRepository};
+use App\Repositories\Eloquent\{EloquentAddressRepository, EloquentTopicRepository, EloquentUserRepository};
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -24,6 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $binds = [
             TopicRepository::class => EloquentTopicRepository::class,
             UserRepository::class => EloquentUserRepository::class,
+            AddressRepository::class => EloquentAddressRepository::class,
         ];
 
         foreach ($binds as $contract => $class) {
